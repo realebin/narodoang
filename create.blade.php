@@ -232,7 +232,7 @@ $('.btn-add-user').on('click',function(){
 <script type="text/javascript">
 $('.btn-add-userrole').on('click',function(){
     
-    $('#userrolesama').append(
+    $('.userrolesama').append(
         `
         <div class="form-group row">
                             <label for="pb" class="col-md-4 col-form-label text-md-right">{{ __('Pembicara Seminar') }}</label>
