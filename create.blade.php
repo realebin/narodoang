@@ -8,13 +8,13 @@
             <h1 class="mt-3"> Create Data Seminar</h1>
             <br/>
             
-            <form method="post" action="/seminar" id="seminar"> 
+            <form method="post" action="/seminar" id="seminar" name="seminar"> 
                 <!-- csrf supaya kita aman dari hackers-->
                 <!-- id bwt nyambungin ke variable di controller & db nya-->
                 @csrf
                 <div class="card" style="background:#EEF0E6">
-                <div class="card-body">
-                <div class="form-group row">
+                    <div class="card-body">
+                        <div class="form-group row">
                             <label for="nama_seminar" class="col-md-4 col-form-label text-md-right">{{ __('Nama Seminar') }}</label>
 
                             <div class="col-md-6">
@@ -56,13 +56,13 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                 </div>
+                                </div>
                         </div>
                         <div class="form-group row">
                             <label for="waktu_mulai" class="col-md-4 col-form-label text-md-right">{{ __('Waktu Mulai') }}</label>
                                 <div class="col-md-6">
-                            <input id="waktu_mulai" type="datetime-local" class="form-control @error('waktu_mulai') is-invalid @enderror" name="waktu_mulai" value="{{ old('waktu_mulai') }}" placeholder="Masukkan Waktu Mulainya Seminar" required autocomplete="waktu_mulai">
-                        </div>
+                                    <input id="waktu_mulai" type="datetime-local" class="form-control @error('waktu_mulai') is-invalid @enderror" name="waktu_mulai" value="{{ old('waktu_mulai') }}" placeholder="Masukkan Waktu Mulainya Seminar" required autocomplete="waktu_mulai">
+                                </div>
                         </div>
 
                         <div class="form-group row">
@@ -105,15 +105,15 @@
                                     @enderror
                                  </div>
                         </div>
-                        </div>
-                        </div>
+                    </div>
+                </div>
         <br/>
 
         <!--multiple row ajax insertion bruh-->
 
         <div class="card" style="background:#EEF0E6">
 			<br/>
-			<h3 align="center">Daftar User</a></h3>
+			<h3 align="center">Daftar User</h3>
             <h6 align="center">Jika dirasa masih membutuhkan menambah user lagi dengan role lain, bisa ditambahkan disini</h6> 
             <h6 align="center">(Misalkan bendahara, sekretaris, konsumsi, dokumentasi, peserta. dll)</h6> 
             <div class="card-body">
@@ -123,7 +123,7 @@
 			    <br />
 			    <!-- <form method="post" id="seminar"> -->
 				    <div class="table-responsive">
-					    <table class="table table-striped table-bordered" id="user_data">
+					    <table class="table table-striped table-bordered" id="user_data" name="user_data">
 						    <tr>
                                 <th>Nama</th>
                                 <th>Role Sebagai</th>
@@ -393,7 +393,7 @@ $(document).ready(function(){
 
 	$(document).on('click', '.remove_details', function(){
 		var row_id = $(this).attr("id");
-		if(confirm("Are you sure you want to remove this row data?"))
+		if(confirm("Apa Anda yakin akan menghapus data pada baris ini?"))
 		{
 			$('#row_'+row_id+'').remove();
 		}
@@ -419,10 +419,10 @@ $(document).ready(function(){
 		{
 			var form_data = $(this).serialize();
 			$.ajax({
-				// url:"insert.php",
-				// method:"POST",
+				url:"/seminar",
+				method:"POST",
 				data:form_data,
-                dataType: json,
+                dataType: 'json',
 				success:function(data)
 				{
 					$('#user_data').find("tr:gt(0)").remove();
