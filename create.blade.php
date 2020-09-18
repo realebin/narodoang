@@ -6,11 +6,14 @@
     <div class="row">
         <div class="col-8 ">
             <h1 class="mt-3"> Create Data Seminar</h1>
+            <br/>
             
-            <form method="post" action="/seminar"> 
+            <form method="post" action="/seminar" id="seminar"> 
                 <!-- csrf supaya kita aman dari hackers-->
                 <!-- id bwt nyambungin ke variable di controller & db nya-->
                 @csrf
+                <div class="card" style="background:#EEF0E6">
+                <div class="card-body">
                 <div class="form-group row">
                             <label for="nama_seminar" class="col-md-4 col-form-label text-md-right">{{ __('Nama Seminar') }}</label>
 
@@ -102,65 +105,81 @@
                                     @enderror
                                  </div>
                         </div>
-
-                        <div id="list_deskripsi">
-                        <!-- @php
-                            $count = 0;
-                            @endphp
-                            @for($i = 0; $i< $count;$i++)
-                                
-                            <div class="form-group row">
-                            <label for="pb" class="col-md-4 col-form-label text-md-right">{{ __('Pembicara Seminar') }}</label>
-                                <div class="col-md-6">
-                                    <select name="pb" id="pb" class="mdb-select md-form colorful-select dropdown-primary combox">
-                                        @foreach($user as $u)
-                                        <option></option>
-                                            <option value="{{$u->id}}">{{$u->name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('topik_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                 </div>
                         </div>
+                        </div>
+        <br/>
 
-                                
-                            @endfor -->
+        <!--multiple row ajax insertion bruh-->
+
+        <div class="card" style="background:#EEF0E6">
+			<br/>
+			<h3 align="center">Daftar User</a></h3>
+            <h6 align="center">Jika dirasa masih membutuhkan menambah user lagi dengan role lain, bisa ditambahkan disini</h6> 
+            <h6 align="center">(Misalkan bendahara, sekretaris, konsumsi, dokumentasi, peserta. dll)</h6> 
+            <div class="card-body">
+			    <div align="right" style="margin-bottom:5px;">
+				    <button type="button" name="add" id="add" class="btn btn-success btn-xs">Add</button>
+			    </div>
+			    <br />
+			    <!-- <form method="post" id="seminar"> -->
+				    <div class="table-responsive">
+					    <table class="table table-striped table-bordered" id="user_data">
+						    <tr>
+                                <th>Nama</th>
+                                <th>Role Sebagai</th>
+                                <th>Details</th>
+                                <th>Remove</th>
+						    </tr>
+					    </table>
+				    </div>
+				    <!-- <div align="center">
+					    <input type="submit" name="insert" id="insert" class="btn btn-primary" value="Insert" />
+				    </div> -->
+			    <!-- </form> -->
+			    <br />
+		    </div>
+            <div id="user_dialog" title="Add Data">
+                <div class="form-group">
+                    <label>Masukkan Nama</label>
+                    <select name="nama" id="nama" class="mdb-select md-form colorful-select dropdown-primary combox">
+                        @foreach($user as $u)
+                        <option></option>
+                            <option value="{{$u->id}}">{{$u->name}}</option>
+                        @endforeach
+                    </select>
+                    <br/>
+                    <!-- <input type="text" name="nama" id="nama" class="form-control" /> -->
+                    <span id="error_nama" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Masukkan Role Sebagai</label>
+                    <input type="text" name="sebagai" id="sebagai" class="form-control" />
+                    <span id="error_sebagai" class="text-danger"></span>
+                </div>
+                <div class="form-group" align="center">
+                    <input type="hidden" name="row_id" id="hidden_row_id" />
+                    <button type="button" name="save" id="save" class="btn btn-info">Save</button>
+                </div>
+            </div>
+		    <div id="action_alert" title="Action">
+            </div>
+		</div>
+
+                    <!-- yang pake button satu satu -->
+                        <!-- <div id="list_deskripsi">
+
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                         <button type="button" class="btn btn-primary btn-add-user"  > <h5>+</h5> Tambah User (misal : moderator, pembicara, dsb) </button>
                             </div>
-                        </div>
-
-
-
-                        
-                        <!-- <div class="well">
-                            <div id="datetimepicker1" class="input-append date">
-                                <input data-format="dd/MM/yyyy hh:mm:ss" type="text">
-                                <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                                </span>
-                            </div>
                         </div> -->
-                            <!-- <script type="text/javascript">
-                            $(function() {
-                                $('#datetimepicker1').datetimepicker({
-                                language: 'pt-BR'
-                                });
-                            });
-                            </script> -->
-
-
+                    <!--batas-->
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary saveme">
                                     {{ __('Tambah Data') }}
                                 </button>
                             </div>
@@ -175,14 +194,14 @@
 @endsection
 
 @section('jquery')
-<script type="text/javascript">
+<!--punya si tambah tombol satu satu-->
+<!-- <script type="text/javascript">
 
-$('.btn-add-user').on('click',function(){
+$(document).on('click','.btn-add-user',function(){
     var deskripsi_seminar="";
     var value_deskripsi="";
     $('#list_deskripsi').append(
         `
-
         <div class="form-group row">
                             <label for="sebagai" class="col-md-4 col-form-label text-md-right">{{ __('User Sebagai') }}</label>
 
@@ -230,20 +249,195 @@ $('.btn-add-user').on('click',function(){
 
 
 <script type="text/javascript">
-$('.btn-add-userrole').on('click',function(){
-    
+$(document).on('click','.btn-add-userrole',function(){
+    // console.log("abcdsefsf");
     $('.userrolesama').append(
         `
         <div class="form-group row">
                             <label for="pb" class="col-md-4 col-form-label text-md-right">{{ __('Pembicara Seminar') }}</label>
                                 <div class="col-md-6">
                                     <select name="pb" id="pb" class="mdb-select md-form colorful-select dropdown-primary combox">
-                                        
+                                        @foreach($user as $u)
+                                        <option></option>
+                                            <option value="{{$u->id}}">{{$u->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('topik_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                  </div>
                         </div>
                         `
     );
 
 });
+</script> -->
+<!-- <script>
+    $(document).on('click','.saveme',function(){
+        $.ajax({
+            type: type,
+            url:url,
+            data:formData,
+            dataType: 'json'
+            success: function(data){
+
+            }
+            error: function(data){
+
+            }
+        });
+    });
+</script> -->
+<!--batas-->
+
+<script type="text/javascript">  
+$(document).ready(function(){ 
+	
+	var count = 0;
+
+	$('#user_dialog').dialog({
+		autoOpen:false,
+		width:400
+	});
+
+	$('#add').click(function(){
+		$('#user_dialog').dialog('option', 'title', 'Add Data');
+        // blank buat select2
+		$('#nama').val(null).trigger('change');;
+		$('#sebagai').val('');
+		$('#error_nama').text('');
+		$('#error_sebagai').text('');
+		$('#nama').css('border-color', '');
+		$('#sebagai').css('border-color', '');
+		$('#save').text('Save');
+		$('#user_dialog').dialog('open');
+	});
+
+	$('#save').click(function(){
+		var error_nama = '';
+		var error_sebagai = '';
+		var nama = '';
+		var sebagai = '';
+		if($('#nama').val() == '')
+		{
+			error_nama = 'Isikan nama';
+			$('#error_nama').text(error_nama);
+			$('#nama').css('border-color', '#cc0000');
+			nama = '';
+		}
+		else
+		{
+			error_nama = '';
+			$('#error_nama').text(error_nama);
+			$('#nama').css('border-color', '');
+			nama = $('#nama').val();
+		}	
+		if($('#sebagai').val() == '')
+		{
+			error_sebagai = 'Isi user sebagai apa';
+			$('#error_sebagai').text(error_sebagai);
+			$('#sebagai').css('border-color', '#cc0000');
+			sebagai = '';
+		}
+		else
+		{
+			error_sebagai = '';
+			$('#error_sebagai').text(error_sebagai);
+			$('#sebagai').css('border-color', '');
+			sebagai = $('#sebagai').val();
+		}
+		if(error_nama != '' || error_sebagai != '')
+		{
+			return false;
+		}
+		else
+		{
+			if($('#save').text() == 'Save')
+			{
+				count = count + 1;
+				output = '<tr id="row_'+count+'">';
+				output += '<td>'+nama+' <input type="hidden" name="hidden_nama[]" id="nama'+count+'" class="nama" value="'+nama+'" /></td>';
+				output += '<td>'+sebagai+' <input type="hidden" name="hidden_sebagai[]" id="sebagai'+count+'" value="'+sebagai+'" /></td>';
+				output += '<td><button type="button" name="view_details" class="btn btn-warning btn-xs view_details" id="'+count+'">View</button></td>';
+				output += '<td><button type="button" name="remove_details" class="btn btn-danger btn-xs remove_details" id="'+count+'">Remove</button></td>';
+				output += '</tr>';
+				$('#user_data').append(output);
+			}
+			else
+			{
+				var row_id = $('#hidden_row_id').val();
+				output = '<td>'+nama+' <input type="hidden" name="hidden_nama[]" id="nama'+row_id+'" class="nama" value="'+nama+'" /></td>';
+				output += '<td>'+sebagai+' <input type="hidden" name="hidden_sebagai[]" id="sebagai'+row_id+'" value="'+sebagai+'" /></td>';
+				output += '<td><button type="button" name="view_details" class="btn btn-warning btn-xs view_details" id="'+row_id+'">View</button></td>';
+				output += '<td><button type="button" name="remove_details" class="btn btn-danger btn-xs remove_details" id="'+row_id+'">Remove</button></td>';
+				$('#row_'+row_id+'').html(output);
+			}
+
+			$('#user_dialog').dialog('close');
+		}
+	});
+
+	$(document).on('click', '.view_details', function(){
+		var row_id = $(this).attr("id");
+		var nama = $('#nama'+row_id+'').val();
+		var sebagai = $('#sebagai'+row_id+'').val();
+		$('#nama').val(nama);
+		$('#sebagai').val(sebagai);
+		$('#save').text('Edit');
+		$('#hidden_row_id').val(row_id);
+		$('#user_dialog').dialog('option', 'title', 'Edit Data');
+		$('#user_dialog').dialog('open');
+	});
+
+	$(document).on('click', '.remove_details', function(){
+		var row_id = $(this).attr("id");
+		if(confirm("Are you sure you want to remove this row data?"))
+		{
+			$('#row_'+row_id+'').remove();
+		}
+		else
+		{
+			return false;
+		}
+	});
+
+	$('#action_alert').dialog({
+		autoOpen:false
+	});
+
+// formnya dia itu teh
+
+	$('#seminar').on('submit', function(event){
+		event.preventDefault();
+		var count_data = 0;
+		$('.nama').each(function(){
+			count_data = count_data + 1;
+		});
+		if(count_data > 0)
+		{
+			var form_data = $(this).serialize();
+			$.ajax({
+				// url:"insert.php",
+				// method:"POST",
+				data:form_data,
+                dataType: json,
+				success:function(data)
+				{
+					$('#user_data').find("tr:gt(0)").remove();
+					$('#action_alert').html('<p>Data Inserted Successfully</p>');
+					$('#action_alert').dialog('open');
+				}
+			})
+		}
+		else
+		{
+			$('#action_alert').html('<p>Please Add atleast one data</p>');
+			$('#action_alert').dialog('open');
+		}
+	});
+	
+});  
 </script>
 @endsection
