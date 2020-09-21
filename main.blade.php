@@ -26,9 +26,7 @@
 
     <title>@yield('title')</title>
     <link rel="icon" href= {{URL::to('asset/logo.png')}}>
-    <style>
-<meta name="csrf-token" content="{!! csrf_token() !!}"/>
-</style>
+
     <style>
         @import url("https://fonts.googleapis.com/css?family=Cardo:400i|Rubik:400,700&display=swap");
         :root {

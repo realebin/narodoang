@@ -1,5 +1,10 @@
 @extends('layout/main')
 @section('title','Create Seminar')
+@section('css')
+<style>
+<meta name="csrf-token" content="{!! csrf_token() !!}"/>
+</style>
+@stop
 @section('container')
 <div class="container">
     <div class="row">
