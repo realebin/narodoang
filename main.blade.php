@@ -252,7 +252,7 @@
         height: 260px;line-height: 230px;color: #ffffff;padding: 0 20px;position: relative;font-size:40pt;
       }
     </style>
-
+     yield('css')
   </head>
 
   <body style="overflow-x :hidden; background-color: #F6FAF1;">

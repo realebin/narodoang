@@ -1,6 +1,8 @@
 @extends('layout/main')
-@section('title','Create User')
-
+@section('title','Create Seminar')
+@section('css')
+<meta name="csrf-token" content="{!! csrf_token() !!}"/>
+@stop
 @section('container')
 <div class="container">
     <div class="row">
