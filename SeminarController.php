@@ -35,6 +35,9 @@ class SeminarController extends Controller
     }
 
     function store(Request $request){
+
+        $request = parse_str($request->data, array());
+        $request = json_decode(json_encode($request)); 
         //dd($request->input());
         // $request->validate([
         //     'nama_seminar' => ['required', 'string', 'max:255'],
