@@ -179,6 +179,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
+                            <!-- <input type="submit" class="btn btn-primary saveme" text="{{ __('Tambah Data') }}"/> -->
                                 <button type="submit" class="btn btn-primary saveme">
                                     {{ __('Tambah Data') }}
                                 </button>
@@ -408,8 +409,9 @@ $(document).ready(function(){
 	});
 
 // formnya dia itu teh
-
-	$('#seminar').on('submit', function(event){
+    $(document).on('submit', '#seminar', function(){
+        console.log("abcd");
+	// $('#seminar').on('submit', function(event){
 		event.preventDefault();
 		var count_data = 0;
 		$('.nama').each(function(){
@@ -417,17 +419,37 @@ $(document).ready(function(){
 		});
 		if(count_data > 0)
 		{
+            console.log("asdasdsdasdd");
 			var form_data = $(this).serialize();
 			$.ajax({
+
 				url:"/seminar",
 				method:"POST",
 				data:form_data,
-                dataType: 'json',
+                // dataType: 'json',
+            
+                error:function(x,e) {
+                    if (x.status==0) {
+                        alert('You are offline!!\n Please Check Your Network.');
+                    } else if(x.status==404) {
+                        alert('Requested URL not found.');
+                    } else if(x.status==500) {
+                        alert('Internal Server Error.');
+                    } else if(e=='parsererror') {
+                        alert('Error.\nParsing JSON Request failed.');
+                    } else if(e=='timeout'){
+                        alert('Request Time out.');
+                    } else {
+                        alert('Unknown Error.\n'+x.responseText);
+                    }
+                },
 				success:function(data)
 				{
+                    console.log("berhasil");
 					$('#user_data').find("tr:gt(0)").remove();
 					$('#action_alert').html('<p>Data Inserted Successfully</p>');
-					$('#action_alert').dialog('open');
+					// $('#action_alert').dialog('open');
+                    // alert("Bisa");
 				}
 			})
 		}
@@ -435,6 +457,7 @@ $(document).ready(function(){
 		{
 			$('#action_alert').html('<p>Please Add atleast one data</p>');
 			$('#action_alert').dialog('open');
+            // alert("gagal");
 		}
 	});
 	
