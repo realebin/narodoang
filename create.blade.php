@@ -421,11 +421,17 @@ $(document).ready(function(){
 		{
             console.log("asdasdsdasdd");
 			var form_data = $(this).serialize();
-			$.ajax({
+			$.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+            $.ajax({
 
 				url:"/seminar",
 				method:"POST",
-				data:form_data,
+				// data:form_data,
+                data:{data: form_data},
                 // dataType: 'json',
             
                 error:function(x,e) {
